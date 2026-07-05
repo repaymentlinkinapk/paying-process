@@ -1,55 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>UPI PAYMENT</title>
+  <title>Payment</title>
+
   <style>
-    body { font-family: Arial; background:#f2f2f2; padding:20px; }
-    .box { background:white; padding:20px; max-width:420px; margin:auto; border-radius:12px; }
-    input, button { width:100%; padding:12px; margin-top:12px; }
-    button { background:#007bff; color:white; border:none; border-radius:6px; }
-    .row { display:flex; justify-content:space-between; align-items:center; gap:10px; }
-    .upiBox { font-weight:bold; }
+    body{
+      font-family:Arial;
+      background:linear-gradient(135deg,#0f172a,#1e293b);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      margin:0;
+    }
+
+    .card{
+      background:white;
+      width:360px;
+      padding:20px;
+      border-radius:15px;
+      text-align:center;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .logo{
+      width:70px;
+      height:70px;
+      border-radius:50%;
+      background:#2563eb;
+      margin:auto;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      color:white;
+      font-weight:bold;
+      font-size:18px;
+    }
+
+    .upi{
+      margin-top:15px;
+      font-weight:bold;
+      word-break:break-all;
+    }
+
+    .box{
+      margin-top:12px;
+      padding:12px;
+      border-radius:8px;
+      background:#f3f4f6;
+      font-weight:bold;
+    }
+
+    .timer{
+      margin-top:12px;
+      padding:10px;
+      border-radius:8px;
+      background:#111827;
+      color:white;
+      font-weight:bold;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      margin-top:12px;
+      border-radius:8px;
+      border:none;
+      color:white;
+    }
+
+    .copy{ background:#22c55e; }
+    .selfieBtn{ background:#f59e0b; }
+    .submit{ background:#2563eb; }
   </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="card">
 
-  <h2>UPI PAYMENT</h2>
+  <div class="logo">PAY</div>
 
-  <!-- UPI SECTION -->
-  <div class="row">
-    <div class="upiBox">
-      UPI ID: <span id="upi"></span>
-    </div>
-    <button style="width:100px;" onclick="copyUPI()">COPY</button>
-  </div>
+  <h3>Pay Now</h3>
+
+  <!-- UPI -->
+  <div class="upi" id="upiBox">example@upi</div>
+  <button class="copy" onclick="copyUPI()">Copy UPI</button>
 
   <!-- AMOUNT -->
-  <input type="number" id="amount" placeholder="Enter Amount">
+  <div class="box">
+    Amount: ₹ <span id="amountBox">500</span>
+  </div>
+
+  <!-- TIMER -->
+  <div class="timer">
+    Time Left: <span id="time">08:00</span>
+  </div>
 
   <!-- SELFIE -->
-  <label><b>Take Selfie</b></label>
-  <input type="file" id="selfie" accept="image/*" capture="user">
+  <input type="file" id="selfie" accept="image/*" capture="user" style="display:none">
 
-  <!-- SUBMIT -->
-  <button onclick="submitData()">SUBMIT</button>
+  <button class="selfieBtn" onclick="openSelfie()">Take Selfie</button>
+
+  <button class="submit" onclick="submitData()">Submit</button>
 
 </div>
 
 <script>
 
-// GET DATA FROM URL
-const params = new URLSearchParams(window.location.search);
+let upiID = "example@upi";
+let amountValue = 500;
 
-// Dynamic values from link
-let upiID = params.get("upi") || "example@upi";
-let amount = params.get("amount") || "";
-
-// SET VALUES
-document.getElementById("upi").innerText = upiID;
-document.getElementById("amount").value = amount;
+document.getElementById("upiBox").innerText = upiID;
+document.getElementById("amountBox").innerText = amountValue;
 
 // COPY UPI
 function copyUPI(){
@@ -57,23 +120,36 @@ function copyUPI(){
   alert("UPI Copied");
 }
 
+// SELFIE
+function openSelfie(){
+  document.getElementById("selfie").click();
+}
+
+// TIMER (8 MIN = 480 seconds)
+let timeLeft = 8 * 60;
+let timerEl = document.getElementById("time");
+
+function updateTimer(){
+  let minutes = Math.floor(timeLeft / 60);
+  let seconds = timeLeft % 60;
+
+  timerEl.innerText =
+    String(minutes).padStart(2,'0') + ":" +
+    String(seconds).padStart(2,'0');
+
+  if(timeLeft > 0){
+    timeLeft--;
+  } else {
+    timerEl.innerText = "EXPIRED";
+  }
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
+
 // SUBMIT
 function submitData(){
-  let amt = document.getElementById("amount").value;
-  let selfie = document.getElementById("selfie").files[0];
-
-  if(!amt){
-    alert("Enter Amount");
-    return;
-  }
-
-  alert("Payment Form Submitted");
-
-  console.log({
-    upi: upiID,
-    amount: amt,
-    selfie: selfie ? selfie.name : "Not Selected"
-  });
+  alert("Submitted Successfully");
 }
 
 </script>
