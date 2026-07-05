@@ -4,10 +4,11 @@
   <title>UPI PAYMENT</title>
   <style>
     body { font-family: Arial; background:#f2f2f2; padding:20px; }
-    .box { background:white; padding:20px; max-width:400px; margin:auto; border-radius:10px; }
-    input, button { width:100%; padding:10px; margin-top:10px; }
-    button { background:#007bff; color:white; border:none; border-radius:5px; }
-    .row { display:flex; justify-content:space-between; align-items:center; }
+    .box { background:white; padding:20px; max-width:420px; margin:auto; border-radius:12px; }
+    input, button { width:100%; padding:12px; margin-top:12px; }
+    button { background:#007bff; color:white; border:none; border-radius:6px; }
+    .row { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .upiBox { font-weight:bold; }
   </style>
 </head>
 
@@ -17,16 +18,19 @@
 
   <h2>UPI PAYMENT</h2>
 
-  <!-- UPI -->
+  <!-- UPI SECTION -->
   <div class="row">
-    <p><b>UPI ID:</b> <span id="upi"></span></p>
+    <div class="upiBox">
+      UPI ID: <span id="upi"></span>
+    </div>
     <button style="width:100px;" onclick="copyUPI()">COPY</button>
   </div>
 
   <!-- AMOUNT -->
-  <input type="number" id="amount" placeholder="ENTER AMOUNT">
+  <input type="number" id="amount" placeholder="Enter Amount">
 
   <!-- SELFIE -->
+  <label><b>Take Selfie</b></label>
   <input type="file" id="selfie" accept="image/*" capture="user">
 
   <!-- SUBMIT -->
@@ -39,16 +43,18 @@
 // GET DATA FROM URL
 const params = new URLSearchParams(window.location.search);
 
+// Dynamic values from link
 let upiID = params.get("upi") || "example@upi";
 let amount = params.get("amount") || "";
 
+// SET VALUES
 document.getElementById("upi").innerText = upiID;
 document.getElementById("amount").value = amount;
 
 // COPY UPI
 function copyUPI(){
   navigator.clipboard.writeText(upiID);
-  alert("UPI COPIED");
+  alert("UPI Copied");
 }
 
 // SUBMIT
@@ -57,16 +63,16 @@ function submitData(){
   let selfie = document.getElementById("selfie").files[0];
 
   if(!amt){
-    alert("ENTER AMOUNT");
+    alert("Enter Amount");
     return;
   }
 
-  alert("SUBMITTED SUCCESSFULLY");
+  alert("Payment Form Submitted");
 
   console.log({
     upi: upiID,
     amount: amt,
-    selfie: selfie ? selfie.name : "NOT SELECTED"
+    selfie: selfie ? selfie.name : "Not Selected"
   });
 }
 
