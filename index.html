@@ -27,7 +27,7 @@
   <input type="number" id="amount" placeholder="ENTER AMOUNT">
 
   <!-- SELFIE -->
-  <input type="file" id="selfie" accept="image/*" capture="environment">
+  <input type="file" id="selfie" accept="image/*" capture="user">
 
   <!-- SUBMIT -->
   <button onclick="submitData()">SUBMIT</button>
@@ -36,31 +36,36 @@
 
 <script>
 
-// STATIC UPI (CHANGE THIS ANYTIME)
-let upiID = "example@upi";
+// GET DATA FROM URL
+const params = new URLSearchParams(window.location.search);
+
+let upiID = params.get("upi") || "example@upi";
+let amount = params.get("amount") || "";
 
 document.getElementById("upi").innerText = upiID;
+document.getElementById("amount").value = amount;
 
-// COPY BUTTON
+// COPY UPI
 function copyUPI(){
   navigator.clipboard.writeText(upiID);
   alert("UPI COPIED");
 }
 
-// SUBMIT (ONLY SHOW DATA)
+// SUBMIT
 function submitData(){
-  let amount = document.getElementById("amount").value;
+  let amt = document.getElementById("amount").value;
   let selfie = document.getElementById("selfie").files[0];
 
-  if(!amount){
+  if(!amt){
     alert("ENTER AMOUNT");
     return;
   }
 
   alert("SUBMITTED SUCCESSFULLY");
+
   console.log({
     upi: upiID,
-    amount: amount,
+    amount: amt,
     selfie: selfie ? selfie.name : "NOT SELECTED"
   });
 }
